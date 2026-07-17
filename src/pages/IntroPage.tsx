@@ -17,6 +17,30 @@ const MeshGradient = lazy(async () => {
   }
 });
 
+// Runs `callback` once the page has loaded and the main thread goes idle
+// (or after a fallback timeout), so it never competes with first paint / TBT.
+function onIdle(callback: () => void): () => void {
+  let cancelled = false;
+  const fire = () => {
+    if (!cancelled) callback();
+  };
+  const schedule = () => {
+    if (typeof window.requestIdleCallback === "function") {
+      window.requestIdleCallback(fire, { timeout: 2000 });
+    } else {
+      window.setTimeout(fire, 300);
+    }
+  };
+
+  if (document.readyState === "complete") schedule();
+  else window.addEventListener("load", schedule, { once: true });
+
+  return () => {
+    cancelled = true;
+    window.removeEventListener("load", schedule);
+  };
+}
+
 /**
  * Mounts the WebGL shader only after the page has loaded and the main thread
  * is idle, so first paint / TBT never pay for shader compile + RAF loop.
@@ -27,26 +51,7 @@ function DeferredShader() {
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    let cancelled = false;
-    const start = () => {
-      const fire = () => {
-        if (!cancelled) setReady(true);
-      };
-      if (typeof window.requestIdleCallback === "function") {
-        window.requestIdleCallback(fire, { timeout: 2000 });
-      } else {
-        window.setTimeout(fire, 300);
-      }
-    };
-
-    if (document.readyState === "complete") start();
-    else window.addEventListener("load", start, { once: true });
-
-    return () => {
-      cancelled = true;
-      window.removeEventListener("load", start);
-    };
+    return onIdle(() => setReady(true));
   }, []);
 
   if (!ready) return null;
@@ -64,6 +69,10 @@ function DeferredShader() {
 }
 
 export default function IntroPage() {
+  // Warms the /overview chunk while the visitor is still reading the intro,
+  // so clicking OVERVIEW doesn't hit a cold-cache download + blank Suspense.
+  useEffect(() => onIdle(() => { void import("./HomePage"); }), []);
+
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-night text-paper antialiased">
       {/* Static stand-in for the shader so first paint looks the same */}

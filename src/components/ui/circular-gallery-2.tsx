@@ -418,6 +418,8 @@ class App {
   screen!: { width: number; height: number };
   viewport!: { width: number; height: number };
   raf!: number;
+  isVisible: boolean = true;
+  looping: boolean = false;
   boundOnResize: () => void;
   boundOnWheel: (e: WheelEvent) => void;
   boundOnTouchDown: (e: MouseEvent | TouchEvent) => void;
@@ -457,7 +459,7 @@ class App {
     this.onResize();
     this.createGeometry();
     this.createMedias(items, bend, textColor, borderRadius, font);
-    this.update();
+    this.wake();
     this.addEventListeners();
   }
 
@@ -542,6 +544,7 @@ class App {
     const x = "touches" in e ? e.touches[0].clientX : e.clientX;
     const distance = (this.start - x) * (this.scrollSpeed * 0.025);
     this.scroll.target = (this.scroll.position ?? 0) + distance;
+    this.wake();
   }
 
   onTouchUp() {
@@ -553,6 +556,7 @@ class App {
     const delta = e.deltaY || (e as any).wheelDelta || e.detail;
     this.scroll.target += (delta > 0 ? this.scrollSpeed : -this.scrollSpeed) * 0.2;
     this.onCheckDebounce();
+    this.wake();
   }
 
   onCheck() {
@@ -581,8 +585,13 @@ class App {
         media.onResize({ screen: this.screen, viewport: this.viewport }),
       );
     }
+    this.wake();
   }
 
+  // Renders every frame while scroll is settling or being dragged; once the
+  // scroll has fully eased to its target, the rAF loop stops entirely instead
+  // of rendering an unchanging frame forever. wake() restarts it from any
+  // input handler or on becoming visible again.
   update() {
     this.scroll.current = lerp(
       this.scroll.current,
@@ -595,7 +604,29 @@ class App {
     }
     this.renderer.render({ scene: this.scene, camera: this.camera });
     this.scroll.last = this.scroll.current;
+
+    const settled = !this.isDown && Math.abs(this.scroll.target - this.scroll.current) < 0.01;
+    if (settled) {
+      this.scroll.current = this.scroll.target;
+      this.looping = false;
+      return;
+    }
+    if (this.isVisible) {
+      this.raf = window.requestAnimationFrame(this.update);
+    } else {
+      this.looping = false;
+    }
+  }
+
+  wake() {
+    if (this.looping || !this.isVisible) return;
+    this.looping = true;
     this.raf = window.requestAnimationFrame(this.update);
+  }
+
+  setVisible(visible: boolean) {
+    this.isVisible = visible;
+    if (visible) this.wake();
   }
 
   addEventListeners() {
@@ -606,8 +637,8 @@ class App {
     this.boundOnTouchUp = this.onTouchUp;
 
     window.addEventListener("resize", this.boundOnResize, { passive: true });
-    window.addEventListener("mousewheel", this.boundOnWheel, { passive: true });
-    window.addEventListener("wheel", this.boundOnWheel, { passive: true });
+    this.container.addEventListener("mousewheel", this.boundOnWheel, { passive: true });
+    this.container.addEventListener("wheel", this.boundOnWheel, { passive: true });
     this.container.addEventListener("mousedown", this.boundOnTouchDown);
     window.addEventListener("mousemove", this.boundOnTouchMove, { passive: true });
     window.addEventListener("mouseup", this.boundOnTouchUp);
@@ -619,8 +650,8 @@ class App {
   destroy() {
     window.cancelAnimationFrame(this.raf);
     window.removeEventListener("resize", this.boundOnResize);
-    window.removeEventListener("mousewheel", this.boundOnWheel);
-    window.removeEventListener("wheel", this.boundOnWheel);
+    this.container.removeEventListener("mousewheel", this.boundOnWheel);
+    this.container.removeEventListener("wheel", this.boundOnWheel);
     this.container.removeEventListener("mousedown", this.boundOnTouchDown);
     window.removeEventListener("mousemove", this.boundOnTouchMove);
     window.removeEventListener("mouseup", this.boundOnTouchUp);
@@ -631,6 +662,7 @@ class App {
     if (this.renderer && this.renderer.gl && this.renderer.gl.canvas.parentNode) {
       this.renderer.gl.canvas.parentNode.removeChild(this.renderer.gl.canvas);
     }
+    this.renderer?.gl?.getExtension("WEBGL_lose_context")?.loseContext();
   }
 }
 
@@ -666,7 +698,14 @@ const CircularGallery = ({
       scrollEase,
     });
 
+    const visibilityObserver = new IntersectionObserver(
+      ([entry]) => app.setVisible(entry.isIntersecting),
+      { rootMargin: "200px" },
+    );
+    visibilityObserver.observe(containerRef.current);
+
     return () => {
+      visibilityObserver.disconnect();
       app.destroy();
     };
   }, [items, bend, borderRadius, scrollSpeed, scrollEase, fontClassName]);

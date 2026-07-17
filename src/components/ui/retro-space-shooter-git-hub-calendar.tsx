@@ -112,7 +112,32 @@ function formatTooltipDate(dateStr: string): string {
   }
 }
 
+const CACHE_TTL_MS = 60 * 60 * 1000;
+
+function readCachedContributions(username: string): ContributionData | null {
+  try {
+    const raw = sessionStorage.getItem(`gh-contrib:${username}`);
+    if (!raw) return null;
+    const { data, savedAt } = JSON.parse(raw) as { data: ContributionData; savedAt: number };
+    if (Date.now() - savedAt > CACHE_TTL_MS) return null;
+    return data;
+  } catch {
+    return null;
+  }
+}
+
+function writeCachedContributions(username: string, data: ContributionData) {
+  try {
+    sessionStorage.setItem(`gh-contrib:${username}`, JSON.stringify({ data, savedAt: Date.now() }));
+  } catch {
+    // storage full or unavailable (e.g. private browsing) — caching is best-effort
+  }
+}
+
 async function fetchContributions(username: string): Promise<ContributionData> {
+  const cached = readCachedContributions(username);
+  if (cached) return cached;
+
   const res = await fetch(
     `https://github-contributions-api.jogruber.de/v4/${username}`,
   );
@@ -130,6 +155,7 @@ async function fetchContributions(username: string): Promise<ContributionData> {
       count: entry.count,
     };
   }
+  writeCachedContributions(username, result);
   return result;
 }
 

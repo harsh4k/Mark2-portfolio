@@ -25,21 +25,21 @@ const rows: HobbyRow[] = [
     title: "Gaming",
     tag: "Interface",
     copy: "Immersive worlds, clean HUDs, and game mechanics shape how I think about interface design—clarity, feedback and interaction.",
-    image: "/images/pic1.jpg",
+    image: "/images/pic1.webp",
   },
   {
     id: "02",
     title: "Sci-Fi & Space",
     tag: "Curiosity",
     copy: "Curiosity doesn't stop at software. Space reminds me how much there still is to discover—and keeps me asking better questions.",
-    image: "/images/pic2.jpg",
+    image: "/images/pic2.webp",
   },
   {
     id: "03",
     title: "Sports",
     tag: "Balance",
     copy: "Football, volleyball and badminton help me reset, stay competitive and keep a balanced mindset away from the screen.",
-    image: "/images/pic3.jpg",
+    image: "/images/pic3.webp",
   },
 ];
 
@@ -134,6 +134,8 @@ export default function OffScreen() {
                       <img
                         src={row.image}
                         alt={row.title}
+                        loading="lazy"
+                        decoding="async"
                         className="aspect-video w-full object-cover"
                       />
                     </motion.div>

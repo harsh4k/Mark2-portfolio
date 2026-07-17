@@ -16,10 +16,14 @@ export function GooeyText({
   className,
   textClassName
 }: GooeyTextProps) {
+  const rootRef = React.useRef<HTMLDivElement>(null);
   const text1Ref = React.useRef<HTMLSpanElement>(null);
   const text2Ref = React.useRef<HTMLSpanElement>(null);
 
   React.useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
     let textIndex = texts.length - 1;
     let time = new Date();
     let morph = 0;
@@ -59,7 +63,7 @@ export function GooeyText({
       setMorph(fraction);
     };
 
-    let animationFrameId: number;
+    let animationFrameId: number | null = null;
 
     function animate() {
       animationFrameId = requestAnimationFrame(animate);
@@ -84,15 +88,35 @@ export function GooeyText({
       }
     }
 
-    animate();
+    // Only animates while on screen — off-screen the loop stops instead of
+    // running the blur/opacity filter math forever. Resets `time` on resume
+    // so the paused interval isn't counted as elapsed morph/cooldown time.
+    const start = () => {
+      if (animationFrameId !== null) return;
+      time = new Date();
+      animate();
+    };
+    const stop = () => {
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
+    };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) start();
+      else stop();
+    });
+    observer.observe(root);
 
     return () => {
-      cancelAnimationFrame(animationFrameId);
+      observer.disconnect();
+      stop();
     };
   }, [texts, morphTime, cooldownTime]);
 
   return (
-    <div className={cn("relative w-full min-w-0", className)}>
+    <div ref={rootRef} className={cn("relative w-full min-w-0", className)}>
       <svg className="absolute h-0 w-0" aria-hidden="true" focusable="false">
         <defs>
           <filter id="threshold">
