@@ -8,7 +8,7 @@ function CanonicalUpdater() {
   const { pathname } = useLocation();
   useEffect(() => {
     const link = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
-    if (link) link.href = `https://hxrshdev.vercel.app${pathname === "/" ? "" : pathname}`;
+    if (link) link.href = `https://harshh.pages.dev${pathname === "/" ? "" : pathname}`;
   }, [pathname]);
   return null;
 }
