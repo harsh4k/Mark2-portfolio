@@ -63,6 +63,7 @@ function DeferredShader() {
         colors={INTRO_COLORS}
         speed={0.6}
         backgroundColor={INTRO_COLORS[0]}
+        minPixelRatio={1}
       />
     </Suspense>
   );

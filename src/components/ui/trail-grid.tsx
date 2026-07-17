@@ -82,16 +82,20 @@ export default function TrailGrid({
       if (col < columns - 1) updateRadii(index + 1, row, col + 1);
     };
 
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    // Raw mousemove can fire far more often than the display repaints (high
+    // poll-rate mice, trackpads). Only the position from the latest event
+    // before each paint matters, so writes are batched to one per rAF instead
+    // of running (and potentially recalculating style) on every raw event.
+    const pendingPosRef = { current: null as { x: number; y: number } | null };
+    let rafId: number | null = null;
 
-      // Dead zone: don't light cells while hovering buttons/links so the trail
-      // never overlaps interactive elements.
-      const target = e.target as HTMLElement | null;
-      if (target?.closest("a, button, [data-no-trail]")) return;
+    const applyPending = () => {
+      rafId = null;
+      const pos = pendingPosRef.current;
+      if (!pos) return;
 
-      const col = Math.floor(e.clientX / cellSize);
-      const row = Math.floor(e.clientY / cellSize);
+      const col = Math.floor(pos.x / cellSize);
+      const row = Math.floor(pos.y / cellSize);
 
       if (col >= 0 && col < columns && row >= 0 && row < rows) {
         const index = row * columns + col;
@@ -121,6 +125,20 @@ export default function TrailGrid({
       }
     };
 
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+      // Dead zone: don't light cells while hovering buttons/links so the trail
+      // never overlaps interactive elements.
+      const target = e.target as HTMLElement | null;
+      if (target?.closest("a, button, [data-no-trail]")) return;
+
+      pendingPosRef.current = { x: e.clientX, y: e.clientY };
+      if (rafId === null) {
+        rafId = requestAnimationFrame(applyPending);
+      }
+    };
+
     const handleMouseLeave = () => {
       lastHoveredRef.current = -1;
     };
@@ -132,6 +150,7 @@ export default function TrailGrid({
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseleave", handleMouseLeave);
+      if (rafId !== null) cancelAnimationFrame(rafId);
       timeouts.forEach(clearTimeout);
       timeouts.clear();
       lastHoveredRef.current = -1;
