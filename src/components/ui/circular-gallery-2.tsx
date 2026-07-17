@@ -10,7 +10,7 @@ import {
   Transform,
   type OGLRenderingContext,
 } from "ogl";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { cn } from "../../lib/utils";
 
 export interface GalleryItem {
@@ -26,8 +26,6 @@ interface CircularGalleryProps {
   scrollSpeed?: number;
   scrollEase?: number;
   fontClassName?: string;
-  children?: React.ReactNode;
-  style?: React.CSSProperties;
 }
 
 function debounce(func: (...args: any[]) => void, wait: number) {
@@ -40,15 +38,6 @@ function debounce(func: (...args: any[]) => void, wait: number) {
 
 function lerp(p1: number, p2: number, t: number) {
   return p1 + (p2 - p1) * t;
-}
-
-function autoBind(instance: object) {
-  const proto = Object.getPrototypeOf(instance);
-  Object.getOwnPropertyNames(proto).forEach((key) => {
-    if (key !== "constructor" && typeof (instance as any)[key] === "function") {
-      (instance as any)[key] = (instance as any)[key].bind(instance);
-    }
-  });
 }
 
 function createTextTexture(
@@ -101,7 +90,6 @@ class Title {
     textColor: string;
     font: string;
   }) {
-    autoBind(this);
     this.gl = gl;
     this.plane = plane;
     this.renderer = renderer;
@@ -420,11 +408,6 @@ class App {
   raf!: number;
   isVisible: boolean = true;
   looping: boolean = false;
-  boundOnResize: () => void;
-  boundOnWheel: (e: WheelEvent) => void;
-  boundOnTouchDown: (e: MouseEvent | TouchEvent) => void;
-  boundOnTouchMove: (e: MouseEvent | TouchEvent) => void;
-  boundOnTouchUp: () => void;
 
   constructor(
     container: HTMLElement,
@@ -450,8 +433,6 @@ class App {
     this.scrollSpeed = scrollSpeed;
     this.scroll = { ease: scrollEase, current: 0, target: 0, last: 0 };
     this.onCheckDebounce = debounce(this.onCheck.bind(this), 200);
-
-    autoBind(this);
 
     this.createRenderer();
     this.createCamera();
@@ -533,31 +514,31 @@ class App {
     });
   }
 
-  onTouchDown(e: MouseEvent | TouchEvent) {
+  onTouchDown = (e: MouseEvent | TouchEvent) => {
     this.isDown = true;
     this.scroll.position = this.scroll.current;
     this.start = "touches" in e ? e.touches[0].clientX : e.clientX;
-  }
+  };
 
-  onTouchMove(e: MouseEvent | TouchEvent) {
+  onTouchMove = (e: MouseEvent | TouchEvent) => {
     if (!this.isDown) return;
     const x = "touches" in e ? e.touches[0].clientX : e.clientX;
     const distance = (this.start - x) * (this.scrollSpeed * 0.025);
     this.scroll.target = (this.scroll.position ?? 0) + distance;
     this.wake();
-  }
+  };
 
-  onTouchUp() {
+  onTouchUp = () => {
     this.isDown = false;
     this.onCheck();
-  }
+  };
 
-  onWheel(e: WheelEvent) {
+  onWheel = (e: WheelEvent) => {
     const delta = e.deltaY || (e as any).wheelDelta || e.detail;
     this.scroll.target += (delta > 0 ? this.scrollSpeed : -this.scrollSpeed) * 0.2;
     this.onCheckDebounce();
     this.wake();
-  }
+  };
 
   onCheck() {
     if (!this.medias || !this.medias[0]) return;
@@ -567,7 +548,7 @@ class App {
     this.scroll.target = this.scroll.target < 0 ? -item : item;
   }
 
-  onResize() {
+  onResize = () => {
     this.screen = {
       width: this.container.clientWidth,
       height: this.container.clientHeight,
@@ -586,13 +567,13 @@ class App {
       );
     }
     this.wake();
-  }
+  };
 
   // Renders every frame while scroll is settling or being dragged; once the
   // scroll has fully eased to its target, the rAF loop stops entirely instead
   // of rendering an unchanging frame forever. wake() restarts it from any
   // input handler or on becoming visible again.
-  update() {
+  update = () => {
     this.scroll.current = lerp(
       this.scroll.current,
       this.scroll.target,
@@ -616,7 +597,7 @@ class App {
     } else {
       this.looping = false;
     }
-  }
+  };
 
   wake() {
     if (this.looping || !this.isVisible) return;
@@ -630,34 +611,28 @@ class App {
   }
 
   addEventListeners() {
-    this.boundOnResize = this.onResize;
-    this.boundOnWheel = this.onWheel;
-    this.boundOnTouchDown = this.onTouchDown;
-    this.boundOnTouchMove = this.onTouchMove;
-    this.boundOnTouchUp = this.onTouchUp;
-
-    window.addEventListener("resize", this.boundOnResize, { passive: true });
-    this.container.addEventListener("mousewheel", this.boundOnWheel, { passive: true });
-    this.container.addEventListener("wheel", this.boundOnWheel, { passive: true });
-    this.container.addEventListener("mousedown", this.boundOnTouchDown);
-    window.addEventListener("mousemove", this.boundOnTouchMove, { passive: true });
-    window.addEventListener("mouseup", this.boundOnTouchUp);
-    this.container.addEventListener("touchstart", this.boundOnTouchDown, { passive: true });
-    window.addEventListener("touchmove", this.boundOnTouchMove, { passive: true });
-    window.addEventListener("touchend", this.boundOnTouchUp, { passive: true });
+    window.addEventListener("resize", this.onResize, { passive: true });
+    this.container.addEventListener("mousewheel", this.onWheel, { passive: true });
+    this.container.addEventListener("wheel", this.onWheel, { passive: true });
+    this.container.addEventListener("mousedown", this.onTouchDown);
+    window.addEventListener("mousemove", this.onTouchMove, { passive: true });
+    window.addEventListener("mouseup", this.onTouchUp);
+    this.container.addEventListener("touchstart", this.onTouchDown, { passive: true });
+    window.addEventListener("touchmove", this.onTouchMove, { passive: true });
+    window.addEventListener("touchend", this.onTouchUp, { passive: true });
   }
 
   destroy() {
     window.cancelAnimationFrame(this.raf);
-    window.removeEventListener("resize", this.boundOnResize);
-    this.container.removeEventListener("mousewheel", this.boundOnWheel);
-    this.container.removeEventListener("wheel", this.boundOnWheel);
-    this.container.removeEventListener("mousedown", this.boundOnTouchDown);
-    window.removeEventListener("mousemove", this.boundOnTouchMove);
-    window.removeEventListener("mouseup", this.boundOnTouchUp);
-    this.container.removeEventListener("touchstart", this.boundOnTouchDown);
-    window.removeEventListener("touchmove", this.boundOnTouchMove);
-    window.removeEventListener("touchend", this.boundOnTouchUp);
+    window.removeEventListener("resize", this.onResize);
+    this.container.removeEventListener("mousewheel", this.onWheel);
+    this.container.removeEventListener("wheel", this.onWheel);
+    this.container.removeEventListener("mousedown", this.onTouchDown);
+    window.removeEventListener("mousemove", this.onTouchMove);
+    window.removeEventListener("mouseup", this.onTouchUp);
+    this.container.removeEventListener("touchstart", this.onTouchDown);
+    window.removeEventListener("touchmove", this.onTouchMove);
+    window.removeEventListener("touchend", this.onTouchUp);
 
     if (this.renderer && this.renderer.gl && this.renderer.gl.canvas.parentNode) {
       this.renderer.gl.canvas.parentNode.removeChild(this.renderer.gl.canvas);

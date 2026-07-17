@@ -19,7 +19,6 @@ export default function WebsitesView() {
         description="A curated selection of websites I've designed and developed — from e-commerce platforms to brand showcases. Each project represents a different challenge and a unique approach to solving real-world problems."
         sectionLabel="(01) Projects"
         statsText={`${websites.length} Projects`}
-        currentIndex={1}
         totalCount={websites.length}
       />
 

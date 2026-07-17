@@ -13,7 +13,7 @@ export type ContributionData = {
   };
 };
 
-export type ThemeColors = {
+type ThemeColors = {
   level0: string;
   level1: string;
   level2: string;
@@ -21,42 +21,28 @@ export type ThemeColors = {
   level4: string;
 };
 
-export type CellShape = "rounded" | "circle";
-
 export type GithubCalendarProps = {
   username?: string;
-  data?: ContributionData;
-  startDate?: string;
-  endDate?: string;
   startsOnSunday?: boolean;
   cellSize?: number;
   cellGap?: number;
-  cellShape?: CellShape;
-  theme?: "github" | ThemeColors;
-  showMonthLabels?: boolean;
-  showStats?: boolean;
-  showLegend?: boolean;
   className?: string;
 };
 
-const THEMES: Record<string, ThemeColors> = {
-  github: {
-    level0: "#ffffff",
-    level1: "#0e4429",
-    level2: "#006d32",
-    level3: "#26a641",
-    level4: "#39d353",
-  },
+const LIGHT_COLORS: ThemeColors = {
+  level0: "#ffffff",
+  level1: "#0e4429",
+  level2: "#006d32",
+  level3: "#26a641",
+  level4: "#39d353",
 };
 
-const DARK_THEMES: Record<string, ThemeColors> = {
-  github: {
-    level0: "#0a0a0a",
-    level1: "#0e4429",
-    level2: "#006d32",
-    level3: "#26a641",
-    level4: "#39d353",
-  },
+const DARK_COLORS: ThemeColors = {
+  level0: "#0a0a0a",
+  level1: "#0e4429",
+  level2: "#006d32",
+  level3: "#26a641",
+  level4: "#39d353",
 };
 
 function parseDate(dateStr: string): Date {
@@ -276,17 +262,9 @@ function CalendarSkeleton({
 
 export const GithubCalendar = memo(function GithubCalendar({
   username,
-  data: dataProp,
-  startDate,
-  endDate,
   startsOnSunday = true,
   cellSize = 12,
   cellGap = 3,
-  cellShape = "rounded",
-  theme = "github",
-  showMonthLabels = true,
-  showStats = true,
-  showLegend = true,
   className,
 }: GithubCalendarProps) {
   const id = useId();
@@ -329,21 +307,17 @@ export const GithubCalendar = memo(function GithubCalendar({
       .finally(() => setLoading(false));
   }, [username]);
 
-  const data: ContributionData = dataProp ?? fetchedData ?? {};
+  const data: ContributionData = fetchedData ?? {};
 
-  const resolvedEnd = endDate ?? formatDate(new Date());
+  const resolvedEnd = formatDate(new Date());
   const resolvedStart = useMemo(() => {
-    if (startDate) return startDate;
     const d = parseDate(resolvedEnd);
     d.setFullYear(d.getFullYear() - 1);
     d.setDate(d.getDate() + 1);
     return formatDate(d);
-  }, [startDate, resolvedEnd]);
+  }, [resolvedEnd]);
 
-  const activeColors = useMemo(() => {
-    if (typeof theme === "object") return theme;
-    return isDark ? DARK_THEMES.github : THEMES.github;
-  }, [theme, isDark]);
+  const activeColors = isDark ? DARK_COLORS : LIGHT_COLORS;
 
   const [tooltip, setTooltip] = useState<TooltipState>({
     visible: false,
@@ -393,7 +367,7 @@ export const GithubCalendar = memo(function GithubCalendar({
   }, [data]);
 
   const step = cellSize + cellGap;
-  const monthLabelHeight = showMonthLabels && !gameActive ? 20 : 0;
+  const monthLabelHeight = gameActive ? 0 : 20;
   const svgWidth = weeks.length * step - cellGap;
   const svgHeight = monthLabelHeight + 7 * step - cellGap;
 
@@ -401,7 +375,7 @@ export const GithubCalendar = memo(function GithubCalendar({
     if (scrollRef.current) {
       scrollRef.current.scrollLeft = scrollRef.current.scrollWidth;
     }
-  }, [fetchedData, dataProp]);
+  }, [fetchedData]);
 
   // Game loop
   useEffect(() => {
@@ -756,7 +730,7 @@ export const GithubCalendar = memo(function GithubCalendar({
     );
   }
 
-  const cellRx = cellShape === "circle" ? cellSize / 2 : cellSize * 0.2;
+  const cellRx = cellSize * 0.2;
 
   return (
     <div
@@ -783,8 +757,7 @@ export const GithubCalendar = memo(function GithubCalendar({
             viewBox={`0 0 ${svgWidth} ${svgHeight}`}
             className="overflow-visible"
           >
-            {showMonthLabels &&
-              !gameActive &&
+            {!gameActive &&
               (() => {
                 const byWeek = new Map<number, string>();
                 monthLabels.forEach(({ label, weekIndex }) =>
@@ -902,57 +875,53 @@ export const GithubCalendar = memo(function GithubCalendar({
         </div>
 
         <div className="flex items-center justify-between gap-x-4">
-          {showLegend && (
-            <div className="flex flex-wrap items-center gap-4 text-xs text-ink/50 shrink-0 mt-0.5">
-              <div className="flex items-center gap-1.5">
-                <span>Less</span>
-                {([0, 1, 2, 3, 4] as ContributionLevel[]).map((level) => (
-                  <svg key={level} width={cellSize} height={cellSize}>
-                    <rect
-                      width={cellSize}
-                      height={cellSize}
-                      rx={cellRx}
-                      fill={activeColors[`level${level}`]}
-                    />
-                  </svg>
-                ))}
-                <span>More</span>
-              </div>
-
-              <div className="flex items-center gap-2 border-l border-ink/15 pl-4">
-                <span className="text-[11px] text-ink/40 select-none">Game Mode</span>
-                <button
-                  onClick={() => setGameActive(!gameActive)}
-                  aria-label="Toggle game mode"
-                  aria-pressed={gameActive}
-                  className="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none data-[state=active]:bg-signal data-[state=inactive]:bg-ink/20"
-                  data-state={gameActive ? "active" : "inactive"}
-                >
-                  <span
-                    className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                      gameActive ? "translate-x-4" : "translate-x-0"
-                    }`}
+          <div className="flex flex-wrap items-center gap-4 text-xs text-ink/50 shrink-0 mt-0.5">
+            <div className="flex items-center gap-1.5">
+              <span>Less</span>
+              {([0, 1, 2, 3, 4] as ContributionLevel[]).map((level) => (
+                <svg key={level} width={cellSize} height={cellSize}>
+                  <rect
+                    width={cellSize}
+                    height={cellSize}
+                    rx={cellRx}
+                    fill={activeColors[`level${level}`]}
                   />
-                </button>
-              </div>
+                </svg>
+              ))}
+              <span>More</span>
             </div>
-          )}
 
-          {showStats && (
-            <div className="flex flex-1 flex-wrap justify-end ml-auto text-sm">
-              <a
-                href={`https://github.com/${username}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-x-1 text-ink/50 hover:text-ink transition-colors no-underline"
+            <div className="flex items-center gap-2 border-l border-ink/15 pl-4">
+              <span className="text-[11px] text-ink/40 select-none">Game Mode</span>
+              <button
+                onClick={() => setGameActive(!gameActive)}
+                aria-label="Toggle game mode"
+                aria-pressed={gameActive}
+                className="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none data-[state=active]:bg-signal data-[state=inactive]:bg-ink/20"
+                data-state={gameActive ? "active" : "inactive"}
               >
-                <span className="font-semibold">{username}</span>
-                <span>contributed</span>
-                <span className="font-bold text-[#0e4429]">{stats.total.toLocaleString()}</span>
-                <span>contributions this year</span>
-              </a>
+                <span
+                  className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                    gameActive ? "translate-x-4" : "translate-x-0"
+                  }`}
+                />
+              </button>
             </div>
-          )}
+          </div>
+
+          <div className="flex flex-1 flex-wrap justify-end ml-auto text-sm">
+            <a
+              href={`https://github.com/${username}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-x-1 text-ink/50 hover:text-ink transition-colors no-underline"
+            >
+              <span className="font-semibold">{username}</span>
+              <span>contributed</span>
+              <span className="font-bold text-[#0e4429]">{stats.total.toLocaleString()}</span>
+              <span>contributions this year</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>

@@ -67,10 +67,6 @@ html, body {
   color: #EEE9DC;
 }
 
-.font-display {
-  font-family: var(--font-display);
-}
-
 .paper-grid {
   background-color: #EEE9DC;
   background-image:
@@ -105,35 +101,6 @@ html, body {
     transparent 1px,
     transparent 9px
   );
-}
-
-@keyframes marqueeLeft {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
-}
-
-@keyframes marqueeRight {
-  0% { transform: translateX(-50%); }
-  100% { transform: translateX(0%); }
-}
-
-.animate-marquee-left {
-  display: flex;
-  width: max-content;
-  animation: marqueeLeft 45s linear infinite;
-}
-
-.animate-marquee-right {
-  display: flex;
-  width: max-content;
-  animation: marqueeRight 45s linear infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-marquee-left,
-  .animate-marquee-right {
-    animation: none;
-  }
 }
 
 /* ===== Intro entrance animations (CSS instead of motion — keeps JS out of first paint) ===== */

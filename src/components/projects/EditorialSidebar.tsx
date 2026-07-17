@@ -8,7 +8,6 @@ interface EditorialSidebarProps {
   title: string;
   subtitle: string;
   description: string;
-  currentIndex: number;
   totalCount: number;
   sectionLabel?: string;
   statsText?: string;
@@ -20,7 +19,6 @@ export default function EditorialSidebar({
   title,
   subtitle,
   description,
-  currentIndex,
   totalCount,
   sectionLabel,
   statsText,
@@ -64,7 +62,7 @@ export default function EditorialSidebar({
           </span>
         )}
         <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#161513]/30">
-          IN VIEW {String(currentIndex).padStart(2, "0")} / {String(totalCount).padStart(2, "0")}
+          IN VIEW 01 / {String(totalCount).padStart(2, "0")}
         </span>
       </div>
     </header>

@@ -19,7 +19,6 @@ export default function FunCodeView() {
         description="Playground projects where I explore creative coding, generative art, interactive experiences, and experimental web tools. No rules, no boundaries — just raw creativity."
         sectionLabel="(02) Experiments"
         statsText={`${fun.length} Project`}
-        currentIndex={1}
         totalCount={fun.length}
       />
 
