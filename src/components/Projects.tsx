@@ -72,17 +72,7 @@ export default function Projects() {
                   <div className="flex flex-col gap-4">
                     <Icon className="h-8 w-8 text-[#161513]/10 md:h-10 md:w-10" />
                     <h3 className="font-display text-5xl uppercase leading-[0.82] tracking-[-0.04em] sm:text-6xl md:text-7xl">
-                      {cat.title.split(" ").length > 1 ? (
-                        <>
-                          {cat.title.split(" ").map((word, wi) => (
-                            <span key={wi} className="inline md:block">
-                              {word}{wi < cat.title.split(" ").length - 1 ? "\u00A0" : ""}
-                            </span>
-                          ))}
-                        </>
-                      ) : (
-                        cat.title
-                      )}
+                      {cat.title}
                     </h3>
                   </div>
 

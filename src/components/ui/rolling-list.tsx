@@ -33,7 +33,7 @@ function RollingTextItem(props: RollingTextItemProps & { key?: React.Key }) {
           <div className="max-md:hidden h-[60px] md:h-20 flex items-center">
             <h2
               className="text-5xl md:text-7xl font-display uppercase tracking-tighter italic"
-              style={{ color: item.accent }}
+              style={{ color: item.accent, textShadow: "0 2px 10px rgba(22,21,19,0.3)" }}
             >
               {item.title}
             </h2>
