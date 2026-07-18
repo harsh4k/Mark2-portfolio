@@ -113,7 +113,7 @@ export default function About() {
                 <span className="h-2.5 w-2.5 rounded-full bg-signal/80" />
                 <span className="h-2.5 w-2.5 rounded-full bg-lime/60" />
                 <span className="h-2.5 w-2.5 rounded-full bg-paper/30" />
-                <span className="ml-2 font-mono text-[9px] uppercase tracking-wider text-paper/40">
+                <span className="ml-2 font-sans text-[9px] uppercase tracking-wider text-paper/40">
                   portrait.png
                 </span>
               </div>
@@ -142,7 +142,7 @@ export default function About() {
             <div className="overflow-hidden rounded-2xl border border-ink/15 bg-[#181713] text-paper">
               <div className="flex items-center gap-2 border-b border-paper/10 px-4 py-2.5">
                 <Terminal className="h-3.5 w-3.5 text-signal" />
-                <span className="font-mono text-[10px] uppercase tracking-wider text-paper/50">
+                <span className="font-sans text-[10px] uppercase tracking-wider text-paper/50">
                   about.sh
                 </span>
               </div>

@@ -22,21 +22,20 @@ export default function Skills() {
       <div className="mx-auto max-w-[1600px]">
         <div className="mb-8 flex flex-col gap-4 border-b border-[#EEE9DC]/10 pb-6 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#EEE9DC]/45">(03) Skill Console</p>
             <h2 className="mt-3 font-display text-[15vw] uppercase leading-[0.8] tracking-[-0.06em] md:text-[7vw]">
               Operating
               <br />
               Range
             </h2>
           </div>
-          <span className="w-fit rounded-full bg-[#C9FF3D] px-4 py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-[#161513]">
+          <span className="w-fit rounded-full bg-[#C9FF3D] px-4 py-2 font-sans text-[10px] uppercase tracking-[0.16em] text-[#161513]">
             Active matrix
           </span>
         </div>
 
         <div className="grid gap-4 lg:grid-cols-[1fr_1.2fr]">
           <div className="rounded-[32px] border border-[#EEE9DC]/15 bg-[#EEE9DC] p-4 text-[#161513]">
-            <div className="mb-4 flex items-center justify-between rounded-full border border-[#161513]/15 px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em]">
+            <div className="mb-4 flex items-center justify-between rounded-full border border-[#161513]/15 px-3 py-2 font-sans text-[9px] uppercase tracking-[0.16em]">
               <span>Core words</span>
               <span>Looping</span>
             </div>
@@ -63,7 +62,7 @@ export default function Skills() {
                 >
                   <div className="mb-12 flex items-center justify-between">
                     <Icon className="h-5 w-5" />
-                    <span className="font-mono text-[10px] uppercase tracking-[0.18em] opacity-60">
+                    <span className="font-sans text-[10px] uppercase tracking-[0.18em] opacity-60">
                       0{index + 1}
                     </span>
                   </div>

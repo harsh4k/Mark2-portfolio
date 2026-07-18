@@ -11,7 +11,7 @@ export default function PostersView() {
         <div className="mx-auto max-w-[1440px] px-4 pt-24 pb-16 md:pt-28">
           <Link
             to="/overview"
-            className="inline-flex items-center gap-2 rounded-full border border-[#161513]/20 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[#161513]/60 transition-colors hover:bg-[#161513] hover:text-[#EEE9DC]"
+            className="inline-flex items-center gap-2 rounded-full border border-[#161513]/20 px-4 py-2 font-sans text-[10px] uppercase tracking-[0.18em] text-[#161513]/60 transition-colors hover:bg-[#161513] hover:text-[#EEE9DC]"
           >
             <ArrowUpRight className="h-3 w-3 rotate-[-45deg]" />
             Back
@@ -22,7 +22,7 @@ export default function PostersView() {
               A collection of poster designs exploring typography, composition, visual hierarchy,
               and the intersection of form and function. Each piece is a study in restraint.
             </p>
-            <div className="mt-6 flex items-center gap-5 font-mono text-[10px] uppercase tracking-[0.15em]">
+            <div className="mt-6 flex items-center gap-5 font-sans text-[10px] uppercase tracking-[0.15em]">
               <span className="text-[#161513]/40">{POSTERS.length} Works</span>
               <span className="h-3 w-px bg-[#161513]/10" />
               <span className="text-[#161513]/30">Cases 04—07</span>
@@ -46,20 +46,20 @@ export default function PostersView() {
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="border-t border-[#161513]/10 pt-12"
           >
-            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#161513]/30">
+            <p className="font-sans text-[10px] uppercase tracking-[0.18em] text-[#161513]/30">
               Explore more
             </p>
             <div className="mt-4 flex flex-wrap items-center gap-4">
               <Link
                 to="/websites"
-                className="group inline-flex items-center gap-2 rounded-full border border-[#161513]/20 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-[#161513]/60 transition-all hover:bg-[#F13A18] hover:text-[#EEE9DC] hover:border-[#F13A18]"
+                className="group inline-flex items-center gap-2 rounded-full border border-[#161513]/20 px-4 py-2 font-sans text-[10px] uppercase tracking-[0.16em] text-[#161513]/60 transition-all hover:bg-[#F13A18] hover:text-[#EEE9DC] hover:border-[#F13A18]"
               >
                 View Websites
                 <ArrowUpRight className="h-3 w-3 transition-transform duration-[0.35s] group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
               <Link
                 to="/fun-code"
-                className="group inline-flex items-center gap-2 rounded-full border border-[#161513]/20 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-[#161513]/60 transition-all hover:bg-[#C9FF3D] hover:text-[#161513] hover:border-[#C9FF3D]"
+                className="group inline-flex items-center gap-2 rounded-full border border-[#161513]/20 px-4 py-2 font-sans text-[10px] uppercase tracking-[0.16em] text-[#161513]/60 transition-all hover:bg-[#C9FF3D] hover:text-[#161513] hover:border-[#C9FF3D]"
               >
                 View Fun Code
                 <ArrowUpRight className="h-3 w-3 transition-transform duration-[0.35s] group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

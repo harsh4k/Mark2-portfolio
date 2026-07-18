@@ -136,7 +136,7 @@ export default function Navbar() {
           </div>
 
           {/* Right side — desktop */}
-          <span className="hidden font-mono text-[10px] uppercase tracking-[0.14em] text-ink/40 md:block">
+          <span className="hidden font-sans text-[10px] uppercase tracking-[0.14em] text-ink/40 md:block">
             Mumbai, India
           </span>
 
@@ -202,7 +202,7 @@ export default function Navbar() {
                           item.onClick();
                           setMenuOpen(false);
                         }}
-                        className={`flex w-full items-center gap-2.5 rounded-xl px-3.5 py-2.5 font-mono text-[11px] uppercase tracking-widest transition-colors ${
+                        className={`flex w-full items-center gap-2.5 rounded-xl px-3.5 py-2.5 font-sans text-[11px] uppercase tracking-widest transition-colors ${
                           active ? "bg-ink text-paper" : "text-ink/70 hover:bg-ink/5"
                         }`}
                       >

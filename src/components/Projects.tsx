@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { ArrowUpRight, Globe, Sparkles, Image } from "lucide-react";
+import { ArrowUpRight, Code2, Gamepad2, LayoutTemplate } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const categories = [
@@ -8,21 +8,21 @@ const categories = [
     title: "Websites",
     description: "Full-featured web applications — e-commerce, dashboards, and platforms built from the ground up.",
     count: 3,
-    icon: Globe,
+    icon: Code2,
   },
   {
     path: "/fun-code",
     title: "Fun Code",
     description: "Experimental projects and creative coding — where constraints don't exist and ideas run free.",
     count: 4,
-    icon: Sparkles,
+    icon: Gamepad2,
   },
   {
     path: "/posters",
     title: "Posters",
     description: "Poster designs exploring typography, composition, and visual hierarchy.",
     count: 4,
-    icon: Image,
+    icon: LayoutTemplate,
   },
 ];
 
@@ -36,7 +36,6 @@ export default function Projects() {
 
       <div className="mx-auto max-w-[1600px]">
         <div className="mb-12 border-b border-[#161513]/15 pb-6">
-          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#161513]/50">(02) Build Board</p>
           <h2 className="mt-3 font-display text-[17vw] uppercase leading-[0.78] tracking-[-0.06em] sm:text-[12vw] md:text-[8vw]">
             Build
             <br />
@@ -64,7 +63,7 @@ export default function Projects() {
                   className="group relative flex h-[320px] flex-col justify-between overflow-hidden rounded-[32px] border border-[#161513]/20 bg-[#EEE9DC] p-6 text-left no-underline transition-all hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(22,21,19,0.1)] md:p-8"
                 >
                   <div className="flex items-start justify-between">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#161513]/40">
+                    <span className="font-sans text-[10px] uppercase tracking-[0.18em] text-[#161513]/40">
                       {String(cat.count).padStart(2, "0")} projects
                     </span>
                     <ArrowUpRight className="h-5 w-5 shrink-0 text-[#F13A18] transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />

@@ -53,9 +53,8 @@ export default function OffScreen() {
     >
       <div className="mx-auto w-full min-w-0 max-w-[1600px]">
         {/* Eyebrow strip */}
-        <div className="flex items-center justify-between gap-4 border-b border-paper/15 pb-4 font-mono text-[10px] uppercase tracking-[0.22em] text-paper/50">
-          <span>(01.2) Off Screen</span>
-          <span className="hidden sm:block">Inputs that aren't code</span>
+        <div className="flex items-center justify-end gap-4 border-b border-paper/15 pb-4 font-sans text-[10px] uppercase tracking-[0.22em] text-paper/50">
+          <span>Inputs that aren't code</span>
         </div>
 
         {/* Header row */}
@@ -92,7 +91,7 @@ export default function OffScreen() {
                   aria-controls={`hobby-panel-${i}`}
                   className="group flex w-full items-baseline gap-4 border-b border-paper/12 py-4 text-left md:gap-8 md:py-5"
                 >
-                  <span className="font-mono text-[10px] tracking-[0.18em] text-signal">
+                  <span className="font-sans text-[10px] tracking-[0.18em] text-signal">
                     {row.id}
                   </span>
                   <span
@@ -102,7 +101,7 @@ export default function OffScreen() {
                   >
                     {row.title}
                   </span>
-                  <span className="ml-auto hidden font-mono text-[9px] uppercase tracking-[0.22em] text-paper/40 sm:block">
+                  <span className="ml-auto hidden font-sans text-[9px] uppercase tracking-[0.22em] text-paper/40 sm:block">
                     {row.tag}
                   </span>
                   <motion.span

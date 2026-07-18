@@ -116,7 +116,7 @@ export default function IntroPage() {
           className="pointer-events-none flex flex-col items-center text-paper"
           style={{ mixBlendMode: "difference" }}
         >
-          <div className="intro-rise mb-6 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.28em]">
+          <div className="intro-rise mb-6 flex items-center gap-2 font-sans text-[10px] uppercase tracking-[0.28em]">
             <Cloud className="h-4 w-4 stroke-2" />
             CLaw
             <span className="mx-2 opacity-40">/</span>

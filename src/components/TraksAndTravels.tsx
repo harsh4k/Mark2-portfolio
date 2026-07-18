@@ -50,9 +50,8 @@ export default function TraksAndTravels() {
     >
       <div className="mx-auto w-full min-w-0 max-w-[1600px]">
         {/* Eyebrow */}
-        <div className="flex items-center justify-between gap-4 border-b border-paper/15 pb-4 font-mono text-[10px] uppercase tracking-[0.22em] text-paper/50">
-          <span>(01.3) Treks & Travels</span>
-          <span className="hidden sm:block">Captured adventures</span>
+        <div className="flex items-center justify-end gap-4 border-b border-paper/15 pb-4 font-sans text-[10px] uppercase tracking-[0.22em] text-paper/50">
+          <span>Captured adventures</span>
         </div>
 
         {/* Headline */}
@@ -110,7 +109,7 @@ export default function TraksAndTravels() {
                   key={vibe.label}
                   className={`rounded-3xl border border-paper/15 bg-paper/5 p-6 backdrop-blur-sm transition-all hover:bg-paper/10 ${vibe.border}`}
                 >
-                  <p className={`font-mono text-[10px] uppercase tracking-[0.18em] ${vibe.accent}`}>
+                  <p className={`font-sans text-[10px] uppercase tracking-[0.18em] ${vibe.accent}`}>
                     {vibe.label}
                   </p>
                   <p className="mt-2 font-display text-xl uppercase leading-tight md:text-2xl">

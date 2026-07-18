@@ -52,7 +52,7 @@ export default function PosterCard({ poster, index }: PosterCardProps) {
 
         <button
           onClick={() => window.open(poster.image, "_blank")}
-          className="group/link inline-flex items-center gap-1.5 border-b border-[#161513]/20 pb-0.5 font-mono text-[9px] uppercase tracking-[0.18em] text-[#161513]/45 transition-all hover:border-[#161513]"
+          className="group/link inline-flex items-center gap-1.5 border-b border-[#161513]/20 pb-0.5 font-sans text-[9px] uppercase tracking-[0.18em] text-[#161513]/45 transition-all hover:border-[#161513]"
         >
           View
           <ArrowUpRight className="h-3 w-3 transition-transform duration-[0.35s] group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />

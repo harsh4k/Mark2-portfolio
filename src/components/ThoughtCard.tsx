@@ -48,7 +48,7 @@ export default function ThoughtCard({ thought, index }: ThoughtCardProps) {
         <div className="absolute inset-0 flex flex-col justify-end p-6">
           <div className="flex items-center gap-2">
             <Icon className="h-4 w-4 text-[#F13A18]" />
-            <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-[#F13A18]">
+            <span className="font-sans text-[9px] uppercase tracking-[0.18em] text-[#F13A18]">
               {thought.tag}
             </span>
           </div>

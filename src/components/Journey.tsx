@@ -40,7 +40,6 @@ export default function Journey() {
       <div className="mx-auto max-w-[1600px]">
         <div className="mb-12 grid gap-4 border-b border-[#161513]/15 pb-8 md:grid-cols-[1.2fr_0.8fr] md:items-end">
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#161513]/50">(04) Journey</p>
             <h2 className="mt-3 font-display text-[17vw] uppercase leading-[0.78] tracking-[-0.06em] md:text-[7.8vw]">
               The path
               <br />
@@ -70,7 +69,7 @@ export default function Journey() {
           className="mt-12 grid gap-4 md:grid-cols-[0.8fr_1.2fr]"
         >
           <div className="rounded-[32px] bg-[#F13A18] p-5 text-[#EEE9DC]">
-            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#EEE9DC]/65">Still iterating. Still learning. Still building.</p>
+            <p className="font-sans text-[10px] uppercase tracking-[0.18em] text-[#EEE9DC]/65">Still iterating. Still learning. Still building.</p>
             <p className="mt-16 font-display text-5xl uppercase leading-none">Version 2.6</p>
           </div>
           <div className="rounded-[32px] border border-[#161513]/15 bg-[#EEE9DC] p-5">

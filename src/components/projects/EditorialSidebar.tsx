@@ -9,7 +9,6 @@ interface EditorialSidebarProps {
   subtitle: string;
   description: string;
   totalCount: number;
-  sectionLabel?: string;
   statsText?: string;
 }
 
@@ -20,32 +19,25 @@ export default function EditorialSidebar({
   subtitle,
   description,
   totalCount,
-  sectionLabel,
   statsText,
 }: EditorialSidebarProps) {
   return (
     <header>
       <Link
         to="/overview"
-        className="inline-flex items-center gap-2 rounded-full border border-[#161513]/20 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[#161513]/60 transition-colors hover:bg-[#161513] hover:text-[#EEE9DC]"
+        className="inline-flex items-center gap-2 rounded-full border border-[#161513]/20 px-4 py-2 font-sans text-[10px] uppercase tracking-[0.18em] text-[#161513]/60 transition-colors hover:bg-[#161513] hover:text-[#EEE9DC]"
       >
         <ArrowLeft className="h-3 w-3" />
         Back
       </Link>
 
-      {sectionLabel && (
-        <p className="mt-16 font-mono text-[11px] uppercase tracking-[0.22em] text-[#161513]/30">
-          {sectionLabel}
-        </p>
-      )}
-
-      <div className="mt-2 flex items-start gap-5">
+      <div className="mt-12 flex items-start gap-5">
         <Icon className={`mt-1.5 h-6 w-6 shrink-0 ${iconClass}`} />
         <div>
           <h1 className="font-display text-[clamp(2.5rem,8vw,5rem)] uppercase leading-[0.82] tracking-[-0.04em]">
             {title}
           </h1>
-          <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[#161513]/40">
+          <p className="mt-2 font-sans text-[10px] uppercase tracking-[0.18em] text-[#161513]/40">
             {subtitle}
           </p>
         </div>
@@ -57,11 +49,11 @@ export default function EditorialSidebar({
 
       <div className="mt-8 flex flex-wrap items-center gap-6">
         {statsText && (
-          <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#161513]/40">
+          <span className="font-sans text-[10px] uppercase tracking-[0.15em] text-[#161513]/40">
             {statsText}
           </span>
         )}
-        <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#161513]/30">
+        <span className="font-sans text-[10px] uppercase tracking-[0.15em] text-[#161513]/30">
           IN VIEW 01 / {String(totalCount).padStart(2, "0")}
         </span>
       </div>

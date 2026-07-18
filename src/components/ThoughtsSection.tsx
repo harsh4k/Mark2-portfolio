@@ -15,9 +15,6 @@ export default function ThoughtsSection() {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="mb-10 border-b border-[#161513]/15 pb-6"
         >
-          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#161513]/50">
-            (07) Mind Dump
-          </p>
           <h2 className="mt-3 font-display text-[17vw] uppercase leading-[0.78] tracking-[-0.06em] md:text-[7.8vw]">
             Mind
             <br />

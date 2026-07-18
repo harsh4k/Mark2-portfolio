@@ -37,7 +37,7 @@ export default function EditorialCard({ project, accentColor }: EditorialCardPro
             <span className="h-2.5 w-2.5 rounded-full bg-[#F13A18]/70" />
             <span className="h-2.5 w-2.5 rounded-full bg-[#E5A93D]/70" />
             <span className="h-2.5 w-2.5 rounded-full bg-[#5CB85C]/60" />
-            <span className="ml-3 font-mono text-[8px] uppercase tracking-[0.15em] text-[#161513]/30">
+            <span className="ml-3 font-sans text-[8px] uppercase tracking-[0.15em] text-[#161513]/30">
               {project.link.replace(/https?:\/\//, "").replace(/\/$/, "")}
             </span>
           </div>
@@ -60,7 +60,7 @@ export default function EditorialCard({ project, accentColor }: EditorialCardPro
       <div className="mt-8">
         <div className="flex items-start gap-4">
           <span
-            className="mt-1 shrink-0 font-mono text-[11px] font-medium leading-none tracking-[0.15em]"
+            className="mt-1 shrink-0 font-sans text-[11px] font-medium leading-none tracking-[0.15em]"
             style={{ color: accent }}
           >
             {project.number}
@@ -69,7 +69,7 @@ export default function EditorialCard({ project, accentColor }: EditorialCardPro
             <h2 className="font-display text-[clamp(1.5rem,5vw,2.5rem)] uppercase leading-[0.88] tracking-[-0.03em]">
               {project.title}
             </h2>
-            <p className="mt-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-[#161513]/40">
+            <p className="mt-1.5 font-sans text-[10px] uppercase tracking-[0.18em] text-[#161513]/40">
               {project.role}
             </p>
           </div>
@@ -83,7 +83,7 @@ export default function EditorialCard({ project, accentColor }: EditorialCardPro
           {project.tags.map((tag) => (
             <span
               key={tag}
-              className="inline-flex items-center gap-1.5 rounded-full border border-[#161513]/12 px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.12em] text-[#161513]/55 transition-colors hover:border-[#161513]/30 hover:text-[#161513]/80"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[#161513]/12 px-3 py-1.5 font-sans text-[9px] uppercase tracking-[0.12em] text-[#161513]/55 transition-colors hover:border-[#161513]/30 hover:text-[#161513]/80"
             >
               <span
                 className="h-1.5 w-1.5 rounded-full"
@@ -120,7 +120,7 @@ export default function EditorialCard({ project, accentColor }: EditorialCardPro
             href={project.link}
             target="_blank"
             rel="noreferrer"
-            className="group/link inline-flex items-center gap-3 rounded-full bg-[#F13A18] px-6 py-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[#EEE9DC] transition-all hover:bg-[#161513] hover:-translate-y-0.5"
+            className="group/link inline-flex items-center gap-3 rounded-full bg-[#F13A18] px-6 py-3 font-sans text-[10px] uppercase tracking-[0.2em] text-[#EEE9DC] transition-all hover:bg-[#161513] hover:-translate-y-0.5"
           >
             {project.link.includes("github.com") ? "View on GitHub" : "Visit Live Site"}
             <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-[0.35s] group-hover/link:translate-x-1 group-hover/link:-translate-y-1" />

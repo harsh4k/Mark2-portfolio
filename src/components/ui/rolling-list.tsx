@@ -41,12 +41,12 @@ function RollingTextItem(props: RollingTextItemProps & { key?: React.Key }) {
         </div>
       </div>
 
-      <span className="max-md:mt-1 max-md:opacity-60 md:absolute md:top-8 md:right-0 text-xs font-mono uppercase tracking-widest text-[#161513]/40 transition-opacity duration-300 md:group-hover:opacity-0 block">
+      <span className="max-md:mt-1 max-md:opacity-60 md:absolute md:top-8 md:right-0 text-xs font-sans uppercase tracking-widest text-[#161513]/40 transition-opacity duration-300 md:group-hover:opacity-0 block">
         {item.category}
       </span>
 
       {item.description && (
-        <p className="mt-2 text-xs font-mono leading-relaxed text-[#161513]/65 max-w-md">
+        <p className="mt-2 text-xs font-sans leading-relaxed text-[#161513]/65 max-w-md">
           {item.description}
         </p>
       )}
